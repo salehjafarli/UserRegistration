@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client;
 using Serilog;
 using Serilog.Configuration;
+using Serilog.Formatting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace UserRegistrationWebApi.ExtensionFunctions
 {
     public static class RabbitMqQueueSinkExtension
     {
-        public static LoggerConfiguration RabbitMqQueue(this LoggerSinkConfiguration loggerConfiguration,IModel Channel)
+        public static LoggerConfiguration RabbitMqQueue(this LoggerSinkConfiguration loggerConfiguration,IModel Channel, ITextFormatter Formatter)
         {
-            return loggerConfiguration.Sink(new RabbitMqQueue(Channel));
+            return loggerConfiguration.Sink(new RabbitMqQueue(Channel,Formatter));
         }
     } 
 }

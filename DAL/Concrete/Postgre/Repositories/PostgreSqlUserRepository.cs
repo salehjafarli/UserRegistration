@@ -25,7 +25,8 @@ namespace DAL.Concrete.Postgre.Repositories
                     com.CommandType = System.Data.CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@providedusername", NpgsqlTypes.NpgsqlDbType.Varchar, Entity.Username);
                     com.Parameters.AddWithValue("@providedpassword", NpgsqlTypes.NpgsqlDbType.Varchar, Entity.Password);
-                    bool res = com.ExecuteNonQuery() == 1;
+                    bool res = (int)com.ExecuteScalar() == 1;
+                    
                     return Task.FromResult(res);
                 }
             }
@@ -42,7 +43,7 @@ namespace DAL.Concrete.Postgre.Repositories
                     com.CommandType = System.Data.CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@providedid", NpgsqlTypes.NpgsqlDbType.Integer, id);
                     
-                    bool res = com.ExecuteNonQuery() == 1;
+                    bool res = (int)com.ExecuteScalar() == 1;
                     return Task.FromResult(res);
                 }
             }
@@ -63,12 +64,13 @@ namespace DAL.Concrete.Postgre.Repositories
                     while (reader.Read())
                     {
 
-                        
+
                         User user = new User
                         {
                             Id = (int)reader["id"],
                             Username = (string)reader["username"],
-                            Password = (string)reader["password"]
+                            Password = (string)reader["password"],
+                            isDeleted = false
                         };
                         users.Add(user);
 

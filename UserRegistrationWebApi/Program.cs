@@ -13,6 +13,9 @@ using Serilog.Sinks.RabbitMQ;
 using Serilog.Formatting.Json;
 using System.Text;
 using UserRegistrationWebApi.ExtensionFunctions;
+using UserRegistrationWebApi.RabbitMq;
+using Microsoft.Extensions.Options;
+using UserRegistrationWebApi.Helpers;
 
 namespace UserRegistrationWebApi
 {
@@ -20,16 +23,21 @@ namespace UserRegistrationWebApi
     {
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false).Build();
+            RabbitMqOptions opts = new RabbitMqOptions();
+            config.GetSection(RabbitMqOptions.RabbitMq).Bind(opts);
+            MyRabbitMqClient connection = new MyRabbitMqClient(Options.Create(opts));
+            connection.DeclareQueue("Logs", false, false, false);
+             Log.Logger = new LoggerConfiguration().WriteTo.RabbitMqQueue(connection.Channel,new MyTextFormatter()).CreateLogger(); // add String formatter!
+            //ConnectionFactory fac = new ConnectionFactory
+            //{
+            //    HostName = "localhost",
+            //    Port = 5672
+            //};
+            //var con = fac.CreateConnection();
+            //var ch = con.CreateModel();
 
-            ConnectionFactory fac = new ConnectionFactory
-            {
-                HostName = "localhost",
-                Port = 5672
-            };
-            var con = fac.CreateConnection();
-            var ch = con.CreateModel();
-
-            ch.QueueDeclare(queue: "hello",durable: false, exclusive: false,autoDelete: false,arguments: null);
+            //ch.QueueDeclare(queue: "hello",durable: false, exclusive: false,autoDelete: false,arguments: null);
 
 
             //string message = "Hello World!";
@@ -41,7 +49,7 @@ namespace UserRegistrationWebApi
             //                     body: body);
 
             
-            Log.Logger = new LoggerConfiguration().WriteTo.RabbitMqQueue(ch).CreateLogger(); // add String formatter!
+           
 
             try
             {
@@ -55,8 +63,7 @@ namespace UserRegistrationWebApi
             finally
             {
                 Log.CloseAndFlush();
-                ch.Dispose();
-                con.Dispose();
+                connection.Dispose();
             }
 
 
