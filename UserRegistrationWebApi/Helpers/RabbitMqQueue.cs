@@ -25,7 +25,7 @@ namespace UserRegistrationWebApi.Helpers
             var writer = new StringWriter(new StringBuilder(256));
             Formatter.Format(logEvent, writer);
             var bytes = Encoding.UTF8.GetBytes(writer.ToString());
-            Channel.BasicPublish(exchange: "",routingKey: "hello", basicProperties: null,body: bytes);
+            Channel.BasicPublish(exchange: "",routingKey: "Logs", basicProperties: null,body: bytes);
         }
     }
 }

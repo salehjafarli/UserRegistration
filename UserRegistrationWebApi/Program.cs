@@ -13,9 +13,9 @@ using Serilog.Sinks.RabbitMQ;
 using Serilog.Formatting.Json;
 using System.Text;
 using UserRegistrationWebApi.ExtensionFunctions;
-using UserRegistrationWebApi.RabbitMq;
 using Microsoft.Extensions.Options;
 using UserRegistrationWebApi.Helpers;
+using RabbitMq.RabbitMq;
 
 namespace UserRegistrationWebApi
 {

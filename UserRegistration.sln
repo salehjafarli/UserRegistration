@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistrationWebApi", "U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{A7F4516E-12E1-4C0F-9E2B-53F94723B80A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogConsumer", "LogConsumer\LogConsumer.csproj", "{6B389A2E-0A0C-43C8-8C11-A45C27274866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMq", "RabbitMq\RabbitMq.csproj", "{8E74D437-A7DD-4038-A14B-0D4A3EE2F6FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A7F4516E-12E1-4C0F-9E2B-53F94723B80A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F4516E-12E1-4C0F-9E2B-53F94723B80A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F4516E-12E1-4C0F-9E2B-53F94723B80A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B389A2E-0A0C-43C8-8C11-A45C27274866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B389A2E-0A0C-43C8-8C11-A45C27274866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B389A2E-0A0C-43C8-8C11-A45C27274866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B389A2E-0A0C-43C8-8C11-A45C27274866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E74D437-A7DD-4038-A14B-0D4A3EE2F6FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E74D437-A7DD-4038-A14B-0D4A3EE2F6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E74D437-A7DD-4038-A14B-0D4A3EE2F6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E74D437-A7DD-4038-A14B-0D4A3EE2F6FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
