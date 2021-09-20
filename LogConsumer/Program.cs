@@ -13,47 +13,32 @@ namespace LogConsumer
 {
     class Program
     {
-        static  void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            RabbitMqOptions opts = new RabbitMqOptions();
-            // config.GetSection(RabbitMqOptions.RabbitMq).Bind(opts);
-            using (MyRabbitMqClient cli = new MyRabbitMqClient(Options.Create(opts)))
+
+
+            await new HostBuilder()
+            .ConfigureServices((hostContext, services) =>
             {
-                var queuestat = cli.DeclareQueue("Logs", false, false, false);
-                Console.WriteLine("Start");
-                var consumer = new EventingBasicConsumer(cli.Channel);
-                consumer.Received += (model, ea) =>
-                {
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine(message);
-                    cli.Channel.BasicAck(ea.DeliveryTag, false);
-                };
-                cli.Channel.BasicConsume("Logs", false, consumer);
-                Console.ReadLine();
-            }
-
-            //await new HostBuilder()
-            //.ConfigureServices((hostContext, services) =>
-            //{
-            //    services.AddHostedService<RabbitBackService>();
-            //})
-            //.RunConsoleAsync();
-            // var config = new ConfigurationBuilder()
-            //                    .AddJsonFile("appsettings.json",false)
-            //                  .Build();
-
-           
-            
-
-
-
-
+                services.AddHostedService<RabbitBackService>();
+            }).RunConsoleAsync();
 
 
 
 
             
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 }
