@@ -28,7 +28,12 @@ namespace UserRegistrationWebApi
             config.GetSection(RabbitMqOptions.RabbitMq).Bind(opts);
             MyRabbitMqClient connection = new MyRabbitMqClient(Options.Create(opts));
             connection.DeclareQueue("Logs", false, false, false);
-             Log.Logger = new LoggerConfiguration().WriteTo.RabbitMqQueue(connection.Channel,new MyTextFormatter()).CreateLogger(); // add String formatter!
+             Log.Logger = new LoggerConfiguration()
+             .WriteTo.RabbitMqQueue(connection.Channel,new MyTextFormatter())
+             .CreateLogger();     // add String formatter!
+            
+            
+            
             //ConnectionFactory fac = new ConnectionFactory
             //{
             //    HostName = "localhost",

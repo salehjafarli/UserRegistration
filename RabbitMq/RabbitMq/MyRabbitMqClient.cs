@@ -33,9 +33,9 @@ namespace RabbitMq.RabbitMq
             
         }
         public QueueDeclareOk DeclareQueue(string queue,
-                                 bool durable,
-                                 bool autoDelete,
-                                 bool exclusive)
+                                           bool durable,
+                                           bool autoDelete,
+                                           bool exclusive)
         {
             return Channel.QueueDeclare(queue,durable,autoDelete,exclusive);
             
