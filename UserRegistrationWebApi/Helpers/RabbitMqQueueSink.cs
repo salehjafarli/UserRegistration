@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace UserRegistrationWebApi.Helpers
 {
-    public class RabbitMqQueue : ILogEventSink
+    public class RabbitMqQueueSink : ILogEventSink
     {
         public IProducer<ConsoleLogEvent> Producer { get; set; }
         public ITextFormatter Formatter { get; set; }
-        public RabbitMqQueue(IProducer<ConsoleLogEvent> Producer, ITextFormatter Formatter)
+        public RabbitMqQueueSink(IProducer<ConsoleLogEvent> Producer, ITextFormatter Formatter)
         {
             this.Producer = Producer;
             this.Formatter = Formatter;

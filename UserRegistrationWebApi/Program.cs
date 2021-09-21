@@ -29,8 +29,8 @@ namespace UserRegistrationWebApi
             LogPublisher logPublisher = new LogPublisher(Options.Create(opts));
             logPublisher.DeclareQueue("Logs", false, false, false);
             Log.Logger = new LoggerConfiguration()
-             .WriteTo.RabbitMqQueue(logPublisher,new MyTextFormatter())
-             .CreateLogger();
+            .WriteTo.RabbitMqQueue(logPublisher,new MyTextFormatter())
+            .CreateLogger();
             try
             {
                 CreateHostBuilder(args).Build().Run();
