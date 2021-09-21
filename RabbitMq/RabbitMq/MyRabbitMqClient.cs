@@ -39,15 +39,12 @@ namespace RabbitMq.RabbitMq
             };
             Connection = fac.CreateConnection();
             Channel= Connection.CreateModel();
-
+            DeclareQueue(QueueOptions);
             
         }
-        public QueueDeclareOk DeclareQueue(string queue,
-                                           bool durable,
-                                           bool autoDelete,
-                                           bool exclusive)
+        private QueueDeclareOk DeclareQueue(QueueOptions options)
         {
-            return Channel.QueueDeclare(queue,durable,autoDelete,exclusive);
+            return Channel.QueueDeclare(options.Queue,options.Durable,options.AutoDelete,options.Exclusive);
             
         }
 

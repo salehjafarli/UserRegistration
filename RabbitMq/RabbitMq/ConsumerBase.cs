@@ -18,7 +18,7 @@ namespace RabbitMq.RabbitMq
         {
 
         }
-        public void OnEventReceived(object sender, BasicDeliverEventArgs e)
+        private void OnEventReceived(object sender, BasicDeliverEventArgs e)
         {
             var body = Encoding.UTF8.GetString(e.Body.ToArray());
             T _event = (T)JsonSerializer.Deserialize(body,typeof(T));
