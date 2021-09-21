@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
+using RabbitMq.Events;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
@@ -9,16 +11,30 @@ using System.Threading.Tasks;
 
 namespace RabbitMq.RabbitMq
 {
-    public class ConsumerBase<T> : MyRabbitMqClient, IConsumer<T>
+    public abstract class ConsumerBase<T> : MyRabbitMqClient, IConsumer<T>
     {
+
         public ConsumerBase(IOptions<RabbitMqOptions> opts) : base(opts)
         {
 
         }
-        public void OnEventReceived<T>(object sender, BasicDeliverEventArgs e)
+        public void OnEventReceived(object sender, BasicDeliverEventArgs e)
         {
             var body = Encoding.UTF8.GetString(e.Body.ToArray());
-            T message = (T)JsonSerializer.Deserialize(body,typeof(T));
+            T _event = (T)JsonSerializer.Deserialize(body,typeof(T));
+            Handle(_event);
+
+
+        }
+
+        public abstract void Handle(T _event);
+
+        public void Consume(string queue, bool autoAck)
+        {
+
+            var consumer = new EventingBasicConsumer(Channel);
+            consumer.Received += OnEventReceived;
+            Channel.BasicConsume(queue,autoAck,consumer);
 
         }
     }

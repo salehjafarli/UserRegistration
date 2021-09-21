@@ -26,36 +26,11 @@ namespace UserRegistrationWebApi
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false).Build();
             RabbitMqOptions opts = new RabbitMqOptions();
             config.GetSection(RabbitMqOptions.RabbitMq).Bind(opts);
-            MyRabbitMqClient connection = new MyRabbitMqClient(Options.Create(opts));
-            connection.DeclareQueue("Logs", false, false, false);
-             Log.Logger = new LoggerConfiguration()
-             .WriteTo.RabbitMqQueue(connection.Channel,new MyTextFormatter())
-             .CreateLogger();     // add String formatter!
-            
-            
-            
-            //ConnectionFactory fac = new ConnectionFactory
-            //{
-            //    HostName = "localhost",
-            //    Port = 5672
-            //};
-            //var con = fac.CreateConnection();
-            //var ch = con.CreateModel();
-
-            //ch.QueueDeclare(queue: "hello",durable: false, exclusive: false,autoDelete: false,arguments: null);
-
-
-            //string message = "Hello World!";
-            //var body = Encoding.UTF8.GetBytes(message);
-
-            //ch.BasicPublish(exchange: "",
-            //                     routingKey: "hello",
-            //                     basicProperties: null,
-            //                     body: body);
-
-            
-           
-
+            LogPublisher logPublisher = new LogPublisher(Options.Create(opts));
+            logPublisher.DeclareQueue("Logs", false, false, false);
+            Log.Logger = new LoggerConfiguration()
+             .WriteTo.RabbitMqQueue(logPublisher,new MyTextFormatter())
+             .CreateLogger();
             try
             {
                 CreateHostBuilder(args).Build().Run();
@@ -63,17 +38,13 @@ namespace UserRegistrationWebApi
             catch (Exception e)
             {
                 Log.Error(e.Message);
-
+                logPublisher.Dispose();
             }
             finally
             {
                 Log.CloseAndFlush();
-                connection.Dispose();
+                
             }
-
-
-
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

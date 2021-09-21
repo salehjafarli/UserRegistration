@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using RabbitMq.Events;
 using RabbitMq.RabbitMq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -14,37 +15,24 @@ namespace LogConsumer
 {
     class RabbitBackService : BackgroundService 
     {
-        public MyRabbitMqClient cli { get; set; }
-        private EventingBasicConsumer Start()
+        public IConsumer<ConsoleLogEvent> Consumer { get; set; }
+        public RabbitBackService(IConsumer<ConsoleLogEvent> Consumer)
         {
-            RabbitMqOptions opts = new RabbitMqOptions();
-            cli = new MyRabbitMqClient(Options.Create(opts));
-            var queuestat = cli.DeclareQueue("Logs", false, false, false);
-            Console.WriteLine("Start");
-            var consumer = new EventingBasicConsumer(cli.Channel);
-            consumer.Received += (model, ea) =>
-            {
-                 var body = ea.Body.ToArray();
-                 var message = Encoding.UTF8.GetString(body);
-                 Console.WriteLine(message);
-                 cli.Channel.BasicAck(ea.DeliveryTag, false);
-            };
-            return consumer;
-                
+            this.Consumer = Consumer;
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var consumer = Start();
+            ((ConsumerBase<ConsoleLogEvent>)Consumer).DeclareQueue("Logs", false, false, false);
             while (!stoppingToken.IsCancellationRequested)
             {
-                cli.Channel.BasicConsume("Logs", false, consumer);
+                Consumer.Consume("Logs",false);
             }
 
             return Task.CompletedTask;
         }
         public override void Dispose()
         {
-            cli.Dispose();
+            
             base.Dispose();
         }
     }

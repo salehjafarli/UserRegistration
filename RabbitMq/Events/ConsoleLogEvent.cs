@@ -8,5 +8,6 @@ namespace RabbitMq.Events
 {
     public class ConsoleLogEvent
     {
+        public string Message { get; set; }
     }
 }

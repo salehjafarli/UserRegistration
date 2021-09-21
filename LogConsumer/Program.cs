@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMq.Events;
 
 namespace LogConsumer
 {
@@ -20,6 +21,7 @@ namespace LogConsumer
             await new HostBuilder()
             .ConfigureServices((hostContext, services) =>
             {
+                services.AddSingleton<IConsumer<ConsoleLogEvent>, LogConsumer>( x => new LogConsumer(Options.Create(new RabbitMqOptions())));
                 services.AddHostedService<RabbitBackService>();
             }).RunConsoleAsync();
 

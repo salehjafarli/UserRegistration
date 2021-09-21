@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using RabbitMq.Events;
+using RabbitMq.RabbitMq;
+using RabbitMQ.Client;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
@@ -13,19 +15,21 @@ namespace UserRegistrationWebApi.Helpers
 {
     public class RabbitMqQueue : ILogEventSink
     {
-        public IModel Channel { get; set; }
+        public IProducer<ConsoleLogEvent> Producer { get; set; }
         public ITextFormatter Formatter { get; set; }
-        public RabbitMqQueue(IModel Channel, ITextFormatter Formatter)
+        public RabbitMqQueue(IProducer<ConsoleLogEvent> Producer, ITextFormatter Formatter)
         {
-            this.Channel = Channel;
+            this.Producer = Producer;
             this.Formatter = Formatter;
         }
         public void Emit(LogEvent logEvent)
         {
             var writer = new StringWriter(new StringBuilder(256));
             Formatter.Format(logEvent, writer);
-            var bytes = Encoding.UTF8.GetBytes(writer.ToString());
-            Channel.BasicPublish(exchange: "",routingKey: "Logs", basicProperties: null,body: bytes);
+            ConsoleLogEvent _event = new ConsoleLogEvent { Message = writer.ToString() };
+
+            Producer.Publish(_event);
+
         }
     }
 }
