@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RabbitMq.RabbitMq
 {
-    public class MyRabbitMqClient : IDisposable
+    public abstract class MyRabbitMqClient : IDisposable
     {
         public IOptions<RabbitMqOptions> Config { get;}
         public IConnection Connection { get; set; }
