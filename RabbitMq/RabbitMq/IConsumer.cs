@@ -9,7 +9,7 @@ namespace RabbitMq.RabbitMq
 {
     public interface IConsumer<T>
     {
-        void OnEventReceived(object sender,BasicDeliverEventArgs e);
+        void Handle(T _event);
         void Consume(string queue, bool autoAck);
     }
 }

@@ -22,7 +22,7 @@ namespace LogConsumer
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            ((ConsumerBase<ConsoleLogEvent>)Consumer).DeclareQueue("Logs", false, false, false);
+            // ((ConsumerBase<ConsoleLogEvent>)Consumer).DeclareQueue("Logs", false, false, false);
             while (!stoppingToken.IsCancellationRequested)
             {
                 Consumer.Consume("Logs",false);

@@ -16,6 +16,15 @@ namespace LogConsumer
 
         }
 
+        public override QueueOptions QueueOptions => new QueueOptions()
+        {
+
+            Queue = "Logs",
+            AutoDelete = false,
+            Durable = false,
+            Exclusive = false
+        };
+
         public override void Handle(ConsoleLogEvent _event)
         {
             Console.WriteLine(_event.Message);

@@ -19,7 +19,7 @@ namespace RabbitMq.RabbitMq
 
         public void Publish(T _event)
         {
-            byte[] body = JsonSerializer.SerializeToUtf8Bytes <T>(_event); 
+            byte[] body = JsonSerializer.SerializeToUtf8Bytes <T>(_event);            
             Channel.BasicPublish(Exchange,RoutingKey,false,null, body);
         }
     }

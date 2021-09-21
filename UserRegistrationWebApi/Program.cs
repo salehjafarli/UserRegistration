@@ -24,13 +24,18 @@ namespace UserRegistrationWebApi
         public static void Main(string[] args)
         {
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false).Build();
+
             RabbitMqOptions opts = new RabbitMqOptions();
+
             config.GetSection(RabbitMqOptions.RabbitMq).Bind(opts);
+
             LogPublisher logPublisher = new LogPublisher(Options.Create(opts));
-            logPublisher.DeclareQueue("Logs", false, false, false);
+
+           //  logPublisher.DeclareQueue("Logs", false, false, false);
             Log.Logger = new LoggerConfiguration()
             .WriteTo.RabbitMqQueue(logPublisher,new MyTextFormatter())
             .CreateLogger();
+
             try
             {
                 CreateHostBuilder(args).Build().Run();

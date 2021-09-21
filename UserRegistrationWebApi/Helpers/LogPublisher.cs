@@ -13,6 +13,16 @@ namespace UserRegistrationWebApi.Helpers
         public override string Exchange => "";
 
         public override string RoutingKey => "Logs";
+
+        public override QueueOptions QueueOptions => new QueueOptions()
+        {
+
+            Queue = "Logs",
+            AutoDelete = false,
+            Durable = false,
+            Exclusive = false
+        };
+
         public LogPublisher(IOptions<RabbitMqOptions> opts) : base(opts)
         {
 
